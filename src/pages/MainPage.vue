@@ -280,3 +280,7 @@
     </div>
   </main>
 </template>
+
+<script>
+export default {};
+</script>
