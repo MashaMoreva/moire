@@ -9,13 +9,16 @@
     </h3>
 
     <span class="catalog__price"> {{ product.price }} ₽</span>
+    <ProductColors :colors="product.colors" />
   </li>
 </template>
 <script>
 import noPhoto from '../../public/img/noPhoto.webp';
+import ProductColors from './ProductColors.vue';
 
 export default {
   props: ['product'],
+  components: { ProductColors },
   data() {
     return {
       image: this.product.colors[0].gallery
