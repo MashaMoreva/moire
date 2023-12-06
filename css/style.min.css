@@ -474,6 +474,7 @@ a {
   display: block;
   width: 20px;
   height: 20px;
+  border: 1px solid #222;
 }
 .colors__value::before {
   content: '';
@@ -1239,5 +1240,29 @@ a {
   width: 30%;
   margin: auto;
   justify-content: center;
+}
+
+.not-found {
+  padding: 100px 100px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  background: url(../img/notFound.webp) no-repeat center/contain;
+  flex: 1;
+}
+
+.not-found__title {
+  margin: 0;
+  font-weight: 900;
+  font-size: 50px;
+}
+
+.not-found__text {
+  margin: 10px 0 10px 0;
+  font-weight: 400;
+  font-size: 30px;
 }
 /*# sourceMappingURL=style.min.css.map */
