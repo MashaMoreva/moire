@@ -10,9 +10,13 @@
     <div class="content__catalog">
       <ProductFilter />
       <section class="catalog">
-        <ProductList :products="products" v-if="productsData" />
         <CustomLoader v-if="loading" />
-        <BasePagination />
+        <ProductList :products="products" v-else-if="!loading" />
+        <AppPagination
+          v-model="page"
+          :count="countProducts"
+          :per-page="productsPerPage"
+        />
       </section>
     </div>
   </main>
@@ -22,7 +26,7 @@
 // eslint-disable-next-line
 import axios from 'axios';
 import ProductList from '@/components/ProductList.vue';
-import BasePagination from '@/components/BasePagination.vue';
+import AppPagination from '@/components/AppPagination.vue';
 import ProductFilter from '@/components/ProductFilter.vue';
 import CustomLoader from '@/components/CustomLoader.vue';
 import { API_BASE_URL } from '../config';
@@ -31,17 +35,29 @@ export default {
   components: {
     ProductFilter,
     ProductList,
-    BasePagination,
+    AppPagination,
     CustomLoader,
   },
   data() {
-    return { productsData: null, loading: false, error: null };
+    return {
+      page: 1,
+      productsPerPage: 12,
+      productsData: null,
+      loading: false,
+      error: null,
+    };
   },
   methods: {
     async loadProducts() {
       this.loading = true;
+      const params = {
+        page: this.page,
+        limit: this.productsPerPage,
+      };
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/products`);
+        const response = await axios.get(`${API_BASE_URL}/api/products`, {
+          params,
+        });
         this.productsData = response.data;
       } catch (error) {
         console.error('Произошла ошибка при загрузке продуктов:', error);
@@ -53,7 +69,15 @@ export default {
   },
   computed: {
     products() {
-      return this.productsData?.items || [];
+      return this.productsData ? this.productsData.items : [];
+    },
+    countProducts() {
+      return this.productsData ? this.productsData.pagination.total : 0;
+    },
+  },
+  watch: {
+    page() {
+      this.loadProducts();
     },
   },
   created() {
