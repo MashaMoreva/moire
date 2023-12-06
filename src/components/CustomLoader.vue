@@ -1,4 +1,3 @@
-<!-- eslint-disable max-len -->
 <template>
   <div class="loader">
     <p>{{ loadingText }}</p>
