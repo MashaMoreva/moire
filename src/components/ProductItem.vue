@@ -12,7 +12,7 @@
   </li>
 </template>
 <script>
-import noPhoto from '@/assets/img/noPhoto.webp';
+import noPhoto from '../../public/img/noPhoto.webp';
 
 export default {
   props: ['product'],
