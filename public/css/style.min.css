@@ -1238,4 +1238,12 @@ a {
   grid-column: 2/3;
   grid-row: 3/4;
 }
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  margin: auto;
+  justify-content: center;
+}
 /*# sourceMappingURL=style.min.css.map */
