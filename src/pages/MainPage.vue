@@ -10,7 +10,15 @@
     </div>
 
     <div class="content__catalog">
-      <ProductFilter :products="products" />
+      <ProductFilter
+        :products="products"
+        :price-from.sync="filterPriceFrom"
+        :price-to.sync="filterPriceTo"
+        :category-id.sync="filterCategoryId"
+        :color-ids.sync="filterColorIds"
+        :material-ids.sync="filterMaterialIds"
+        :season-ids.sync="filterSeasonIds"
+      />
       <section class="catalog">
         <CustomLoader v-if="loading" />
         <ProductList :products="products" v-else-if="!loading" />
@@ -45,6 +53,14 @@ export default {
     return {
       page: 1,
       productsPerPage: 12,
+
+      filterPriceFrom: null,
+      filterPriceTo: null,
+      filterCategoryId: 0,
+      filterColorIds: [],
+      filterMaterialIds: [],
+      filterSeasonIds: [],
+
       productsData: null,
       loading: false,
       error: null,
@@ -54,23 +70,35 @@ export default {
     getCorrectEnding,
     async loadProducts() {
       this.loading = true;
-      const params = {
-        page: this.page,
-        limit: this.productsPerPage,
-      };
-      try {
-        const res = await axios.get(`${API_BASE_URL}/api/products`, {
-          params,
-        });
-        this.productsData = res.data;
-      } catch (error) {
-        console.error('Произошла ошибка при загрузке продуктов:', error);
-        this.error = 'Произошла ошибка при загрузке продуктов';
-      } finally {
-        this.loading = false;
-      }
+      clearTimeout(this.loadProductsTimer);
+      this.loadProductsTimer = setTimeout(async () => {
+        try {
+          const params = {
+            page: this.page,
+            limit: this.productsPerPage,
+            minPrice: this.filterPriceFrom,
+            maxPrice: this.filterPriceTo,
+            categoryId: this.filterCategoryId,
+            colorIds: this.filterColorIds,
+            materialIds: this.filterMaterialIds,
+            seasonIds: this.filterSeasonIds,
+          };
+
+          const res = await axios.get(`${API_BASE_URL}/api/products`, {
+            params,
+          });
+
+          this.productsData = res.data;
+        } catch (error) {
+          console.error('Произошла ошибка при загрузке продуктов:', error);
+          this.error = 'Произошла ошибка при загрузке продуктов';
+        } finally {
+          this.loading = false;
+        }
+      }, 0);
     },
   },
+
   computed: {
     products() {
       return this.productsData ? this.productsData.items : [];
@@ -80,9 +108,13 @@ export default {
     },
   },
   watch: {
-    page() {
-      this.loadProducts();
-    },
+    page: 'loadProducts',
+    filterCategoryId: 'loadProducts',
+    filterPriceFrom: 'loadProducts',
+    filterPriceTo: 'loadProducts',
+    filterColorIds: 'loadProducts',
+    filterMaterialIds: 'loadProducts',
+    filterSeasonIds: 'loadProducts',
   },
   created() {
     this.loadProducts();
