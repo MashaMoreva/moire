@@ -55,7 +55,7 @@ select:focus-visible {
   outline: 2px solid #e02d71;
 }
 
-se *,
+*,
 ::after,
 ::before {
   -webkit-box-sizing: inherit;
