@@ -4,7 +4,13 @@
       <fieldset class="form__block">
         <legend class="form__legend">Цена</legend>
         <label class="form__label form__label--price">
-          <input class="form__input" type="text" name="min-price" value="0" />
+          <input
+            class="form__input"
+            type="text"
+            name="min-price"
+            value=""
+            :placeholder="minPrice"
+          />
           <span class="form__value">От</span>
         </label>
         <label class="form__label form__label--price">
@@ -12,7 +18,8 @@
             class="form__input"
             type="text"
             name="max-price"
-            value="12345"
+            value=""
+            :placeholder="maxPrice"
           />
           <span class="form__value">До</span>
         </label>
@@ -165,5 +172,23 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: ['products'],
+  data() {
+    return {
+      minPrice: null,
+      maxPrice: null,
+    };
+  },
+  methods: {
+    calculatePrices() {
+      const prices = this.products.map((product) => product.price);
+      this.minPrice = Math.min(...prices);
+      this.maxPrice = Math.max(...prices);
+    },
+  },
+  watch: {
+    products: 'calculatePrices',
+  },
+};
 </script>
