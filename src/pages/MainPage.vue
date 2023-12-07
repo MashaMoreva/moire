@@ -3,12 +3,14 @@
     <div class="content__top">
       <div class="content__row">
         <h1 class="content__title">Каталог</h1>
-        <span class="content__info"> 152 товара </span>
+        <span class="content__info">
+          {{ countProducts }} {{ getCorrectEnding(countProducts) }}
+        </span>
       </div>
     </div>
 
     <div class="content__catalog">
-      <ProductFilter />
+      <ProductFilter :products="products" />
       <section class="catalog">
         <CustomLoader v-if="loading" />
         <ProductList :products="products" v-else-if="!loading" />
@@ -29,6 +31,7 @@ import ProductList from '@/components/ProductList.vue';
 import AppPagination from '@/components/AppPagination.vue';
 import ProductFilter from '@/components/ProductFilter.vue';
 import CustomLoader from '@/components/CustomLoader.vue';
+import getCorrectEnding from '@/helpers/getCorrectEnding';
 import { API_BASE_URL } from '../config';
 
 export default {
@@ -48,6 +51,7 @@ export default {
     };
   },
   methods: {
+    getCorrectEnding,
     async loadProducts() {
       this.loading = true;
       const params = {
@@ -55,10 +59,10 @@ export default {
         limit: this.productsPerPage,
       };
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/products`, {
+        const res = await axios.get(`${API_BASE_URL}/api/products`, {
           params,
         });
-        this.productsData = response.data;
+        this.productsData = res.data;
       } catch (error) {
         console.error('Произошла ошибка при загрузке продуктов:', error);
         this.error = 'Произошла ошибка при загрузке продуктов';
