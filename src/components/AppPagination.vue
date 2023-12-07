@@ -1,14 +1,17 @@
 <template>
   <ul class="catalog__pagination pagination">
     <li class="pagination__item">
-      <a
-        class="pagination__link pagination__link--arrow pagination__link--disabled"
+      <button
+        class="pagination__link pagination__link--arrow"
         aria-label="Предыдущая страница"
+        @click.prevent="previousPage"
+        :disabled="page === 1"
+        :class="{ 'pagination__link--disabled': page === 1 }"
       >
         <svg width="8" height="14" fill="currentColor">
           <use xlink:href="#icon-arrow-left"></use>
         </svg>
-      </a>
+      </button>
     </li>
     <li class="pagination__item" v-for="pageNumber in pages" :key="pageNumber">
       <a
@@ -21,15 +24,17 @@
       </a>
     </li>
     <li class="pagination__item">
-      <a
+      <button
         class="pagination__link pagination__link--arrow"
-        href="#"
         aria-label="Следующая страница"
+        @click.prevent="nextPage"
+        :disabled="page === pages"
+        :class="{ 'pagination__link--disabled': page === pages }"
       >
         <svg width="8" height="14" fill="currentColor">
           <use xlink:href="#icon-arrow-right"></use>
         </svg>
-      </a>
+      </button>
     </li>
   </ul>
 </template>
@@ -48,6 +53,12 @@ export default {
   methods: {
     paginate(page) {
       this.$emit('paginate', page);
+    },
+    previousPage() {
+      this.$emit('paginate', this.page - 1);
+    },
+    nextPage() {
+      this.$emit('paginate', this.page + 1);
     },
   },
 };
