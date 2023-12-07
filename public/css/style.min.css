@@ -46,7 +46,16 @@ html {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-*,
+
+select:hover {
+  outline: 2px solid #e02d71;
+}
+
+select:focus-visible {
+  outline: 2px solid #e02d71;
+}
+
+se *,
 ::after,
 ::before {
   -webkit-box-sizing: inherit;
@@ -281,6 +290,7 @@ a {
   display: block;
   color: #222;
 }
+
 .form__label:not(:last-child) {
   margin-bottom: 25px;
 }
@@ -361,6 +371,7 @@ a {
   font-family: inherit;
   line-height: 1;
 }
+
 .form__counter,
 .form__counter button {
   display: -webkit-box;
