@@ -2,10 +2,29 @@
   <main class="content container">
     <div class="content__top">
       <div class="content__row">
-        <h1 class="content__title">Каталог</h1>
-        <span class="content__info">
-          {{ countProducts }} {{ getCorrectEnding(countProducts) }}
-        </span>
+        <div class="content__column">
+          <h1 class="content__title">Каталог</h1>
+          <span class="content__info">
+            {{ countProducts }} {{ getCorrectEnding(countProducts) }}
+          </span>
+        </div>
+        <div class="content__column">
+          <legend class="content__info">
+            Показывать товаров на странице:&#8194;
+          </legend>
+          <label class="form__label form__label--select">
+            <select
+              class="form__select"
+              v-model="productsPerPage"
+              @change="loadProducts"
+            >
+              <option value="3">3</option>
+              <option value="6">6</option>
+              <option value="9">9</option>
+              <option value="12">12</option>
+            </select>
+          </label>
+        </div>
       </div>
     </div>
 

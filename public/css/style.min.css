@@ -230,7 +230,14 @@ a {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  justify-content: space-between;
 }
+
+.content__column {
+  display: flex;
+  align-items: center;
+}
+
 .content__breadcrumbs {
   margin-bottom: 10px;
 }
