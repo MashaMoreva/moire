@@ -5,8 +5,9 @@
         <input
           class="colors__radio sr-only"
           type="radio"
-          name="color-1"
-          value="#73B6EA"
+          :value="color.color.code"
+          v-model="currentColor"
+          @change="changeColor(color.color.code)"
         />
         <span
           class="colors__value"
@@ -19,6 +20,17 @@
 </template>
 <script>
 export default {
-  props: ['colors', 'currentColor'],
+  props: ['colors'],
+  data() {
+    return {
+      currentColor: this.colors[0].color.code,
+    };
+  },
+  methods: {
+    changeColor(colorCode) {
+      this.currentColor = colorCode;
+      this.$emit('colorChanged', colorCode);
+    },
+  },
 };
 </script>
