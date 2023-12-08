@@ -65,15 +65,25 @@
           <form class="form" action="#" method="POST">
             <div class="item__row item__row--center">
               <div class="form__counter">
-                <button type="button" aria-label="Убрать один товар">
+                <button
+                  type="button"
+                  aria-label="Убрать один товар"
+                  @click="decrementQuantity"
+                  :disabled="quantity === 1"
+                  :class="{ 'form__counter-button--disabled': quantity === 1 }"
+                >
                   <svg width="12" height="12" fill="currentColor">
                     <use xlink:href="#icon-minus"></use>
                   </svg>
                 </button>
 
-                <input type="text" value="1" name="count" />
+                <input type="text" :value="quantity" name="count" />
 
-                <button type="button" aria-label="Добавить один товар">
+                <button
+                  type="button"
+                  aria-label="Добавить один товар"
+                  @click="incrementQuantity"
+                >
                   <svg width="12" height="12" fill="currentColor">
                     <use xlink:href="#icon-plus"></use>
                   </svg>
@@ -169,16 +179,25 @@ export default {
       error: null,
 
       currentSku: null,
+      quantity: 1,
 
       selectedColorId: null,
       selectedSizeId: null,
-      selectedQuantity: 1,
     };
   },
   filters: {
     numberFormat,
   },
   methods: {
+    incrementQuantity() {
+      this.quantity += 1;
+    },
+
+    decrementQuantity() {
+      if (this.quantity > 1) {
+        this.quantity -= 1;
+      }
+    },
     // prettier-ignore
     async loadProduct() {
       try {
