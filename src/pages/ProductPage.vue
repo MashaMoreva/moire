@@ -150,14 +150,36 @@
       <div class="item__desc">
         <ul class="tabs">
           <li class="tabs__item">
-            <a class="tabs__link" href="#"> Информация о товаре </a>
+            <a
+              class="tabs__link"
+              @click="activeTab = 'info'"
+              :class="{ 'tabs__link--current': activeTab === 'info' }"
+            >
+              Информация о товаре
+            </a>
           </li>
           <li class="tabs__item">
-            <a class="tabs__link tabs__link--current"> Доставка и возврат </a>
+            <a
+              class="tabs__link"
+              @click="activeTab = 'delivery'"
+              :class="{ 'tabs__link--current': activeTab === 'delivery' }"
+            >
+              Доставка
+            </a>
           </li>
         </ul>
 
-        <div class="item__content"></div>
+        <div class="item__content">
+          <div v-if="activeTab === 'info'">
+            {{ product.content }}
+          </div>
+          <div v-else-if="activeTab === 'delivery'">
+            <p>
+              • Самовывоз <br />
+              • Доставка курьером <br />
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -180,6 +202,7 @@ export default {
 
       currentSku: null,
       quantity: 1,
+      activeTab: 'info',
 
       selectedColorId: null,
       selectedSizeId: null,
