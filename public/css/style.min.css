@@ -609,7 +609,17 @@ a {
 }
 .pics__wrapper {
   margin-bottom: 20px;
+  width: 570px;
+  height: 570px;
+  overflow: hidden;
 }
+
+.pics__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .pics__list {
   margin: 0;
   padding: 0;
@@ -618,10 +628,22 @@ a {
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 20px;
 }
+
+.pics__item {
+  width: 98px;
+  height: 98px;
+}
+
 .pics__link {
   border-bottom: 3px solid transparent;
   -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
+}
+
+.pics__link-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 .pics__link:focus,
 .pics__link:hover {
