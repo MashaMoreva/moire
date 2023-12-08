@@ -91,7 +91,6 @@ export default {
     reloadPage() {
       this.$router.go(0);
     },
-
     async loadProducts() {
       this.loading = true;
       clearTimeout(this.loadProductsTimer);
@@ -102,7 +101,7 @@ export default {
             limit: this.productsPerPage,
             minPrice: this.filterPriceFrom,
             maxPrice: this.filterPriceTo,
-            categoryId: this.filterCategoryId || this.$route.params.categoryId,
+            categoryId: this.filterCategoryId,
             colorIds: this.filterColorIds,
             materialIds: this.filterMaterialIds,
             seasonIds: this.filterSeasonIds,
@@ -141,6 +140,9 @@ export default {
     filterSeasonIds: 'loadProducts',
   },
   created() {
+    if (this.$route.params.categoryId !== undefined) {
+      this.filterCategoryId = this.$route.params.categoryId;
+    }
     this.loadProducts();
   },
 };
