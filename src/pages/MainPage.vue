@@ -1,9 +1,10 @@
+<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <template>
   <main class="content container">
     <div class="content__top">
       <div class="content__row">
         <div class="content__column">
-          <h1 class="content__title">Каталог</h1>
+          <a class="content__title" @click="reloadPage">Каталог</a>
           <span class="content__info">
             {{ countProducts }} {{ getCorrectEnding(countProducts) }}
           </span>
@@ -87,6 +88,10 @@ export default {
   },
   methods: {
     getCorrectEnding,
+    reloadPage() {
+      this.$router.go(0);
+    },
+
     async loadProducts() {
       this.loading = true;
       clearTimeout(this.loadProductsTimer);
@@ -97,7 +102,7 @@ export default {
             limit: this.productsPerPage,
             minPrice: this.filterPriceFrom,
             maxPrice: this.filterPriceTo,
-            categoryId: this.filterCategoryId,
+            categoryId: this.filterCategoryId || this.$route.params.categoryId,
             colorIds: this.filterColorIds,
             materialIds: this.filterMaterialIds,
             seasonIds: this.filterSeasonIds,
