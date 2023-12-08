@@ -118,7 +118,11 @@
         </ul>
       </fieldset>
 
-      <button class="filter__submit button button--primery" type="submit">
+      <button
+        class="filter__submit button button--primery"
+        type="submit"
+        :disabled="!isAnyFilterFilled"
+      >
         Применить
       </button>
       <button
@@ -245,7 +249,7 @@ export default {
   computed: {
     isAnyFilterFilled() {
       return (
-      // prettier-ignore
+        // prettier-ignore
         this.currentPriceFrom !== null
         || this.currentPriceTo !== null
         || this.currentCategoryId !== 0
