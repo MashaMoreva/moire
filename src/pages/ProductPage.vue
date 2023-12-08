@@ -13,7 +13,10 @@
           </router-link>
         </li>
         <li class="breadcrumbs__item">
-          <router-link :to="{ name: '' }" class="breadcrumbs__link">
+          <router-link
+            :to="{ name: 'main', params: { categoryId: product.category.id } }"
+            class="breadcrumbs__link"
+          >
             {{ product.category.title }}
           </router-link>
         </li>
