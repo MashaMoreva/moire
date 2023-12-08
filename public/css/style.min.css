@@ -410,6 +410,11 @@ a {
   -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
 }
+.form__counter button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .form__counter button:focus,
 .form__counter button:hover {
   background-color: #222;
