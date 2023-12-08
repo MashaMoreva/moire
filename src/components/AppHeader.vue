@@ -1,7 +1,7 @@
 <template>
   <header class="header container">
     <div class="header__wrapper">
-      <span class="header__info">Каталог</span>
+      <span class="header__info"></span>
 
       <a class="header__logo" href="#">
         <img
@@ -12,7 +12,7 @@
         />
       </a>
 
-      <a class="header__tel" href="tel:8 800 600 90 09"> 8 800 600 90 09 </a>
+      <span class="header__tel"></span>
 
       <CartIndicator />
     </div>
