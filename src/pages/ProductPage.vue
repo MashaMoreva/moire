@@ -1,3 +1,4 @@
+<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <!-- eslint-disable vuejs-accessibility/form-control-has-label -->
 <template>
   <main v-if="loading" class="content container">
@@ -39,14 +40,18 @@
             :key="color.id"
             class="pics__item"
           >
-            <a href="#" class="pics__link">
+            <a
+              href="#"
+              class="pics__link"
+              :class="{
+                'pics__link--current': selectedColorId === color.color.id,
+              }"
+            >
               <img
                 class="pics__link-image"
                 :src="color.gallery[0].file.url"
                 :alt="product.title"
-                :class="{
-                  'pics__link--current': selectedColorId === color.color.id,
-                }"
+                @click="selectedColorId = color.color.id"
               />
             </a>
           </li>
