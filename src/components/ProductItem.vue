@@ -1,14 +1,17 @@
 <template>
   <li class="catalog__item">
-    <a class="catalog__pic" href="#">
+    <router-link
+      class="catalog__pic"
+      :to="{ name: 'product', params: { id: product.id } }"
+    >
       <img :src="image" :alt="product.title" />
-    </a>
+    </router-link>
 
     <h3 class="catalog__title">
       <a href="#"> {{ product.title }} </a>
     </h3>
 
-    <span class="catalog__price"> {{ product.price }} ₽</span>
+    <span class="catalog__price"> {{ product.price | numberFormat }} ₽</span>
     <ProductColors
       :colors="product.colors"
       @colorChanged="updateImage"
@@ -17,6 +20,7 @@
   </li>
 </template>
 <script>
+import numberFormat from '@/helpers/numberFormat';
 import noPhoto from '../../public/img/noPhoto.webp';
 import ProductColors from './ProductColors.vue';
 
@@ -30,6 +34,9 @@ export default {
         : noPhoto,
       currentColor: this.product.colors[0].color.code,
     };
+  },
+  filters: {
+    numberFormat,
   },
   methods: {
     updateImage(newColorCode) {
