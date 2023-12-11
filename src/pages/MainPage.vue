@@ -139,7 +139,7 @@ export default {
     filterMaterialIds: 'loadProducts',
     filterSeasonIds: 'loadProducts',
   },
-  created() {
+  mounted() {
     if (this.$route.params.categoryId !== undefined) {
       this.filterCategoryId = this.$route.params.categoryId;
     }
