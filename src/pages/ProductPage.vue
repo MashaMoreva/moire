@@ -254,8 +254,13 @@ export default {
       );
     },
   },
-  created() {
-    this.loadProduct();
+  watch: {
+    '$route.params.id': {
+      handler() {
+        this.loadProduct();
+      },
+      immediate: true,
+    },
   },
 };
 </script>
