@@ -33,7 +33,7 @@
         <div class="pics__wrapper">
           <img
             class="pics__image"
-            :src="currentColorGalleryImage"
+            :src="currentColor.gallery[0].file.url"
             :alt="product.title"
           />
         </div>
@@ -44,7 +44,6 @@
             class="pics__item"
           >
             <a
-              href="#"
               class="pics__link"
               :class="{
                 'pics__link--current': selectedColorId === color.color.id,
@@ -62,7 +61,7 @@
       </div>
 
       <div class="item__info">
-        <span class="item__code">Артикул: {{ currentSku }}</span>
+        <span class="item__code">Артикул: {{ currentColor.id }}</span>
         <h2 class="item__title">{{ product.title }}</h2>
         <div class="item__form">
           <form class="form" action="#" method="POST">
@@ -203,7 +202,6 @@ export default {
       loading: false,
       error: null,
 
-      currentSku: null,
       quantity: 1,
       activeTab: 'info',
 
@@ -234,7 +232,6 @@ export default {
         );
         this.product = data;
 
-        this.currentSku = this.product.colors.id;
         if (this.product.colors && this.product.colors.length > 0) {
           this.selectedColorId = this.product.colors[0].color.id;
         }
@@ -248,27 +245,14 @@ export default {
         this.loading = false;
       }
     },
+  },
+  computed: {
     // prettier-ignore
-    getSelectedColor() {
+    currentColor() {
       return this.product.colors.find(
         (color) => color.color.id === this.selectedColorId,
       );
     },
-    handleColorChange() {
-      const selectedColor = this.getSelectedColor();
-      if (selectedColor) {
-        this.currentSku = selectedColor.id;
-      }
-    },
-  },
-  computed: {
-    currentColorGalleryImage() {
-      const selectedColor = this.getSelectedColor();
-      return selectedColor ? selectedColor.gallery[0].file.url : '';
-    },
-  },
-  watch: {
-    selectedColorId: 'handleColorChange',
   },
   created() {
     this.loadProduct();
