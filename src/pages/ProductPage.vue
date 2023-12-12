@@ -64,7 +64,12 @@
         <span class="item__code">Артикул: {{ currentColor.id }}</span>
         <h2 class="item__title">{{ product.title }}</h2>
         <div class="item__form">
-          <form class="form" action="#" method="POST">
+          <form
+            class="form"
+            action="#"
+            method="POST"
+            @submit.prevent="addToCart"
+          >
             <div class="item__row item__row--center">
               <div class="form__counter">
                 <button
@@ -193,6 +198,7 @@ import axios from 'axios';
 import numberFormat from '@/helpers/numberFormat';
 import { API_BASE_URL } from '@/config';
 import CustomLoader from '@/components/CustomLoader.vue';
+import { mapActions } from 'vuex';
 
 export default {
   components: { CustomLoader },
@@ -213,6 +219,7 @@ export default {
     numberFormat,
   },
   methods: {
+    ...mapActions(['addProductToCart']),
     incrementQuantity() {
       this.quantity += 1;
     },
@@ -244,6 +251,15 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    addToCart() {
+      const data = {
+        productId: this.$route.params.id,
+        colorId: this.currentColor.color.id,
+        sizeId: this.selectedSizeId,
+        quantity: this.quantity,
+      };
+      this.addProductToCart(data);
     },
   },
   computed: {
