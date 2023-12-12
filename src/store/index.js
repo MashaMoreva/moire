@@ -53,6 +53,9 @@ export default new Vuex.Store({
         cartItem.quantity = payload.quantity;
       }
     },
+    resetCart(state) {
+      state.cartProducts = [];
+    },
   },
   actions: {
     async loadCart(context) {
@@ -96,7 +99,7 @@ export default new Vuex.Store({
       context.commit('updateCartProductQuantity', payload);
       try {
         const { data } = await axios.put(
-          `${API_BASE_URL}/api/baskets/products2`,
+          `${API_BASE_URL}/api/baskets/products`,
           {
             basketItemId: payload.basketItemId,
             quantity: payload.quantity,
