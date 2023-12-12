@@ -193,7 +193,6 @@
 </template>
 
 <script>
-// eslint-disable-next-line
 import axios from 'axios';
 import numberFormat from '@/helpers/numberFormat';
 import { API_BASE_URL } from '@/config';

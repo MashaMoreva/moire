@@ -53,7 +53,6 @@
 </template>
 
 <script>
-// eslint-disable-next-line
 import axios from 'axios';
 import ProductList from '@/components/ProductList.vue';
 import AppPagination from '@/components/AppPagination.vue';
@@ -107,11 +106,11 @@ export default {
             seasonIds: this.filterSeasonIds,
           };
 
-          const res = await axios.get(`${API_BASE_URL}/api/products`, {
+          const { data } = await axios.get(`${API_BASE_URL}/api/products`, {
             params,
           });
 
-          this.productsData = res.data;
+          this.productsData = data;
         } catch (error) {
           console.error('Произошла ошибка при загрузке продуктов:', error);
           this.error = 'Произошла ошибка при загрузке продуктов';
