@@ -1,4 +1,3 @@
-<!-- eslint-disable vuejs-accessibility/form-control-has-label -->
 <template>
   <main class="content container">
     <div class="content__top">
@@ -15,7 +14,9 @@
 
       <div class="content__row">
         <h1 class="content__title">Корзина</h1>
-        <span class="content__info"> 3 товара </span>
+        <span class="content__info"
+          >{{ cartProductsCount }} {{ getCorrectEnding(cartProductsCount) }}
+        </span>
       </div>
     </div>
 
@@ -23,25 +24,38 @@
       <form class="cart__form form" action="#" method="POST">
         <div class="cart__field">
           <ul class="cart__list">
-            <li class="cart__item product">
+            <li
+              v-for="product in cartDetailProducts"
+              :key="product.id"
+              class="cart__item product"
+            >
               <div class="product__pic">
                 <img
-                  src="img/product-square-4.jpg"
                   width="120"
                   height="120"
-                  srcset="img/product-square-4@2x.jpg 2x"
-                  alt="Название товара"
+                  :src="product.color.gallery[0].file.url"
+                  :alt="product.product.title"
                 />
               </div>
-              <h3 class="product__title">Базовая хлопковая футболка</h3>
-              <p class="product__info product__info--color">
-                Цвет:
-                <span>
-                  <i style="background-color: #ff9b78"></i>
-                  Персиковый
-                </span>
-              </p>
-              <span class="product__code"> Артикул: 1501230 </span>
+              <h3 class="product__title">{{ product.product.title }}</h3>
+              <div class="product__info">
+                <div class="product__info--color">
+                  Цвет:
+                  <span>
+                    <i
+                      style="border: 1px solid #222"
+                      :style="{ 'background-color': product.color.color.code }"
+                    ></i>
+                  </span>
+                </div>
+                <div class="product__info--color">
+                  Размер:
+                  <span>
+                    {{ product.size.title }}
+                  </span>
+                </div>
+              </div>
+              <span class="product__code"> Артикул: {{ product.id }} </span>
 
               <div class="product__counter form__counter">
                 <button type="button" aria-label="Убрать один товар">
@@ -49,8 +63,12 @@
                     <use xlink:href="#icon-minus"></use>
                   </svg>
                 </button>
-
-                <input type="text" value="1" name="count" />
+                <label for="productQuantity"></label>
+                <input
+                  id="productQuantity"
+                  type="text"
+                  :value="product.quantity"
+                />
 
                 <button type="button" aria-label="Добавить один товар">
                   <svg width="10" height="10" fill="currentColor">
@@ -59,107 +77,9 @@
                 </button>
               </div>
 
-              <b class="product__price"> 990 ₽ </b>
-
-              <button
-                class="product__del button-del"
-                type="button"
-                aria-label="Удалить товар из корзины"
-              >
-                <svg width="20" height="20" fill="currentColor">
-                  <use xlink:href="#icon-close"></use>
-                </svg>
-              </button>
-            </li>
-
-            <li class="cart__item product">
-              <div class="product__pic">
-                <img
-                  src="img/product-square-5.jpg"
-                  width="120"
-                  height="120"
-                  srcset="img/product-square-5@2x.jpg 2x"
-                  alt="Название товара"
-                />
-              </div>
-              <h3 class="product__title">Гироскутер Razor Hovertrax 2.0</h3>
-              <p class="product__info product__info--color">
-                Цвет:
-                <span>
-                  <i style="background-color: #73b6ea"></i>
-                  Нежно-голубой
-                </span>
-              </p>
-              <span class="product__code"> Артикул: 1501230 </span>
-
-              <div class="product__counter form__counter">
-                <button type="button" aria-label="Убрать один товар">
-                  <svg width="10" height="10" fill="currentColor">
-                    <use xlink:href="#icon-minus"></use>
-                  </svg>
-                </button>
-
-                <input type="text" value="1" name="count" />
-
-                <button type="button" aria-label="Добавить один товар">
-                  <svg width="10" height="10" fill="currentColor">
-                    <use xlink:href="#icon-plus"></use>
-                  </svg>
-                </button>
-              </div>
-
-              <b class="product__price"> 1 990 ₽ </b>
-
-              <button
-                class="product__del button-del"
-                type="button"
-                aria-label="Удалить товар из корзины"
-              >
-                <svg width="20" height="20" fill="currentColor">
-                  <use xlink:href="#icon-close"></use>
-                </svg>
-              </button>
-            </li>
-
-            <li class="cart__item product">
-              <div class="product__pic">
-                <img
-                  src="img/product-square-6.jpg"
-                  width="120"
-                  height="120"
-                  srcset="img/product-square-6@2x.jpg 2x"
-                  alt="Название товара"
-                />
-              </div>
-              <h3 class="product__title">
-                Электрический дрифт-карт Razor Lil’ Crazy
-              </h3>
-              <p class="product__info product__info--color">
-                Цвет:
-                <span>
-                  <i style="background-color: #ff6b00"></i>
-                  Оранжевый
-                </span>
-              </p>
-              <span class="product__code"> Артикул: 1501230 </span>
-
-              <div class="product__counter form__counter">
-                <button type="button" aria-label="Убрать один товар">
-                  <svg width="10" height="10" fill="currentColor">
-                    <use xlink:href="#icon-minus"></use>
-                  </svg>
-                </button>
-
-                <input type="text" value="1" name="count" />
-
-                <button type="button" aria-label="Добавить один товар">
-                  <svg width="10" height="10" fill="currentColor">
-                    <use xlink:href="#icon-plus"></use>
-                  </svg>
-                </button>
-              </div>
-
-              <b class="product__price"> 1 090 ₽ </b>
+              <b class="product__price">
+                {{ product.price * product.quantity }} ₽
+              </b>
 
               <button
                 class="product__del button-del"
@@ -178,7 +98,9 @@
           <p class="cart__desc">
             Мы&nbsp;посчитаем стоимость доставки на&nbsp;следующем этапе
           </p>
-          <p class="cart__price">Итого: <span>4 070 ₽</span></p>
+          <p class="cart__price">
+            Итого: <span>{{ cartTotalPrice }} ₽</span>
+          </p>
 
           <button class="cart__button button button--primery" type="submit">
             Оформить заказ
@@ -190,5 +112,20 @@
 </template>
 
 <script>
-export default {};
+import getCorrectEnding from '@/helpers/getCorrectEnding';
+
+export default {
+  methods: { getCorrectEnding },
+  computed: {
+    cartDetailProducts() {
+      return this.$store.getters.cartDetailProducts;
+    },
+    cartTotalPrice() {
+      return this.$store.getters.cartTotalPrice;
+    },
+    cartProductsCount() {
+      return this.$store.getters.cartProductsCount;
+    },
+  },
+};
 </script>
