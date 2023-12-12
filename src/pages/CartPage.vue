@@ -24,73 +24,11 @@
       <form class="cart__form form" action="#" method="POST">
         <div class="cart__field">
           <ul class="cart__list">
-            <li
+            <CartItem
               v-for="product in cartDetailProducts"
               :key="product.id"
-              class="cart__item product"
-            >
-              <div class="product__pic">
-                <img
-                  width="120"
-                  height="120"
-                  :src="product.color.gallery[0].file.url"
-                  :alt="product.product.title"
-                />
-              </div>
-              <h3 class="product__title">{{ product.product.title }}</h3>
-              <div class="product__info">
-                <div class="product__info--color">
-                  Цвет:
-                  <span>
-                    <i
-                      style="border: 1px solid #222"
-                      :style="{ 'background-color': product.color.color.code }"
-                    ></i>
-                  </span>
-                </div>
-                <div class="product__info--color">
-                  Размер:
-                  <span>
-                    {{ product.size.title }}
-                  </span>
-                </div>
-              </div>
-              <span class="product__code"> Артикул: {{ product.id }} </span>
-
-              <div class="product__counter form__counter">
-                <button type="button" aria-label="Убрать один товар">
-                  <svg width="10" height="10" fill="currentColor">
-                    <use xlink:href="#icon-minus"></use>
-                  </svg>
-                </button>
-                <label for="productQuantity"></label>
-                <input
-                  id="productQuantity"
-                  type="text"
-                  :value="product.quantity"
-                />
-
-                <button type="button" aria-label="Добавить один товар">
-                  <svg width="10" height="10" fill="currentColor">
-                    <use xlink:href="#icon-plus"></use>
-                  </svg>
-                </button>
-              </div>
-
-              <b class="product__price">
-                {{ product.price * product.quantity }} ₽
-              </b>
-
-              <button
-                class="product__del button-del"
-                type="button"
-                aria-label="Удалить товар из корзины"
-              >
-                <svg width="20" height="20" fill="currentColor">
-                  <use xlink:href="#icon-close"></use>
-                </svg>
-              </button>
-            </li>
+              :product="product"
+            />
           </ul>
         </div>
 
@@ -113,19 +51,18 @@
 
 <script>
 import getCorrectEnding from '@/helpers/getCorrectEnding';
+import { mapGetters } from 'vuex';
+import CartItem from '@/components/CartItem.vue';
 
 export default {
+  components: { CartItem },
   methods: { getCorrectEnding },
   computed: {
-    cartDetailProducts() {
-      return this.$store.getters.cartDetailProducts;
-    },
-    cartTotalPrice() {
-      return this.$store.getters.cartTotalPrice;
-    },
-    cartProductsCount() {
-      return this.$store.getters.cartProductsCount;
-    },
+    ...mapGetters({
+      cartDetailProducts: 'cartDetailProducts',
+      cartTotalPrice: 'cartTotalPrice',
+      cartProductsCount: 'cartProductsCount',
+    }),
   },
 };
 </script>
