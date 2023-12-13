@@ -11,6 +11,7 @@ export default new Vuex.Store({
   state: {
     userAccessKey: null,
     cartProducts: [],
+    orderInfo: null,
   },
   getters: {
     cartDetailProducts(state) {
@@ -37,6 +38,15 @@ export default new Vuex.Store({
     cartProductsCount(state, getters) {
       return getters.cartDetailProducts.length;
     },
+    orderInfo(state) {
+      return state.orderInfo;
+    },
+    orderInfoTotalPrice(state) {
+      return state.orderInfo.basket.items.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+    },
   },
   mutations: {
     updateUserAccessKey(state, accessKey) {
@@ -55,6 +65,9 @@ export default new Vuex.Store({
     },
     resetCart(state) {
       state.cartProducts = [];
+    },
+    updateOrderInfo(state, orderInfo) {
+      state.orderInfo = orderInfo;
     },
   },
   actions: {
@@ -91,12 +104,15 @@ export default new Vuex.Store({
           }
         );
         context.commit('updateCartProducts', data.items);
+        return { success: true, message: 'Товар добавлен в корзину!' };
       } catch (error) {
-        console.error('Ошибка при добавлении товара в корзину:', error);
+        return {
+          success: false,
+          message: 'Ошибка при добавлении товара в корзину',
+        };
       }
     },
     async updateCartProductQuantity(context, payload) {
-      context.commit('updateCartProductQuantity', payload);
       try {
         const { data } = await axios.put(
           `${API_BASE_URL}/api/baskets/products`,
@@ -110,12 +126,28 @@ export default new Vuex.Store({
             },
           }
         );
+        context.commit('updateCartProductQuantity', payload);
         context.commit('updateCartProducts', data.items);
       } catch (error) {
         console.error(
           'Ошибка при изменении количества товара в корзине:',
           error
         );
+      }
+    },
+    async loadOrderInfo(context, orderId) {
+      try {
+        const { data } = await axios.get(
+          `${API_BASE_URL}/api/orders/${orderId}`,
+          {
+            params: {
+              userAccessKey: context.state.userAccessKey,
+            },
+          }
+        );
+        context.commit('updateOrderInfo', data);
+      } catch (error) {
+        console.error('Ошибка загрузки данных заказа:', error);
       }
     },
   },
