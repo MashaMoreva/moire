@@ -45,6 +45,7 @@
             :to="{ name: 'order' }"
             class="cart__button button button--primery"
             type="submit"
+            :disabled="cartDetailProducts.length === 0"
           >
             Оформить заказ
           </router-link>
