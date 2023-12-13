@@ -1,5 +1,8 @@
 <template>
-  <li :key="product.id" class="cart__item product">
+  <li v-if="loading">
+    <CustomLoader />
+  </li>
+  <li v-else :key="product.id" class="cart__item product">
     <div class="product__pic">
       <img
         width="120"
@@ -59,17 +62,61 @@
       class="product__del button-del"
       type="button"
       aria-label="Удалить товар из корзины"
-      @click.prevent="deleteProductFromCart"
+      @click.prevent="deleteProduct"
     >
       <svg width="20" height="20" fill="currentColor">
         <use xlink:href="#icon-close"></use>
       </svg>
     </button>
+    <div v-if="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
   </li>
 </template>
 <script>
+import { mapActions } from 'vuex';
+import CustomLoader from './CustomLoader.vue';
+
 export default {
+  components: { CustomLoader },
   props: ['product'],
+  data() {
+    return {
+      loading: false,
+      successMessage: '',
+      errorMessage: '',
+    };
+  },
+  methods: {
+    ...mapActions(['deleteProductFromCart']),
+    deleteProduct() {
+      this.loading = true;
+      this.successMessage = '';
+      this.errorMessage = '';
+      const data = {
+        basketItemId: this.product.id,
+      };
+      this.deleteProductFromCart(data)
+        .then((result) => {
+          if (result.success) {
+            this.successMessage = result.message;
+          } else {
+            this.errorMessage = result.message;
+          }
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    incrementQuantity() {
+      this.quantity += 1;
+    },
+    decrementQuantity() {
+      if (this.quantity > 1) {
+        this.quantity -= 1;
+      }
+    },
+  },
   computed: {
     quantity: {
       get() {
@@ -81,21 +128,6 @@ export default {
           quantity: value,
         });
       },
-    },
-  },
-  methods: {
-    incrementQuantity() {
-      this.quantity += 1;
-    },
-    decrementQuantity() {
-      if (this.quantity > 1) {
-        this.quantity -= 1;
-      }
-    },
-    deleteProductFromCart() {
-      this.$store.dispatch('deleteProductFromCart', {
-        basketItemId: this.product.id,
-      });
     },
   },
 };
