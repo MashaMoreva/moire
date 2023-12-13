@@ -157,6 +157,12 @@ a {
   -webkit-tap-highlight-color: transparent;
   width: 20px;
   height: 20px;
+  cursor: pointer;
+}
+
+.button-del:hover {
+  background-color: #e02d71;
+  /* opacity: 0.5; */
 }
 .header {
   background-color: #fff;
