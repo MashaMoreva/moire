@@ -140,12 +140,12 @@ export default new Vuex.Store({
         const { data } = await axios.delete(
           `${API_BASE_URL}/api/baskets/products`,
           {
-            basketItemId: payload.basketItemId,
-          },
-          {
             params: {
               userAccessKey: context.state.userAccessKey,
             },
+          },
+          {
+            basketItemId: payload.basketItemId,
           }
         );
         context.commit('updateCartProducts', data.items);
