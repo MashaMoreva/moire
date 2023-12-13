@@ -135,6 +135,24 @@ export default new Vuex.Store({
         );
       }
     },
+    async deleteProductFromCart(context, payload) {
+      try {
+        const { data } = await axios.delete(
+          `${API_BASE_URL}/api/baskets/products`,
+          {
+            basketItemId: payload.basketItemId,
+          },
+          {
+            params: {
+              userAccessKey: context.state.userAccessKey,
+            },
+          }
+        );
+        context.commit('updateCartProducts', data.items);
+      } catch (error) {
+        console.error('Ошибка при удалении товара из корзины:', error);
+      }
+    },
     async loadOrderInfo(context, orderId) {
       try {
         const { data } = await axios.get(
