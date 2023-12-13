@@ -1330,4 +1330,6 @@ a {
 
 .error-message {
   color: #e02d71;
+  grid-column: 3/6;
+  grid-row: 2/4;
 }
