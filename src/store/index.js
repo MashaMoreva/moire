@@ -149,8 +149,12 @@ export default new Vuex.Store({
           }
         );
         context.commit('updateCartProducts', data.items);
+        return { success: true, message: 'Товар удалён из корзины' };
       } catch (error) {
-        console.error('Ошибка при удалении товара из корзины:', error);
+        return {
+          success: false,
+          message: 'Ошибка при удалении товара из корзины',
+        };
       }
     },
     async loadOrderInfo(context, orderId) {
