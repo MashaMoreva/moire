@@ -1,5 +1,8 @@
 <template>
-  <main class="content container">
+  <main v-if="loadingDeliveryOptions" class="content container">
+    <CustomLoader />
+  </main>
+  <main v-else class="content container">
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
@@ -98,7 +101,7 @@
             </ul>
 
             <h3 class="cart__title">Оплата</h3>
-            <CustomLoader v-if="loading" />
+            <CustomLoader v-if="loadingPaymentOptions" />
             <ul v-else class="cart__options options">
               <li
                 v-for="paymentOption in paymentOptions"
@@ -180,7 +183,8 @@ export default {
   components: { BaseFormText, BaseFormTextarea, CustomLoader },
   data() {
     return {
-      loading: false,
+      loadingDeliveryOptions: false,
+      loadingPaymentOptions: false,
       sending: false,
 
       formData: {
@@ -201,6 +205,7 @@ export default {
   },
   methods: {
     async loadDeliveryOptions() {
+      this.loadingDeliveryOptions = true;
       try {
         const { data } = await axios.get(`${API_BASE_URL}/api/deliveries`);
         this.deliveryOptions = data;
@@ -209,11 +214,13 @@ export default {
         }
       } catch (error) {
         console.error('Ошибка при загрузке способов доставки:', error);
+      } finally {
+        this.loadingDeliveryOptions = false;
       }
     },
     async loadPaymentOptions(deliveryTypeId) {
       try {
-        this.loading = true;
+        this.loadingPaymentOptions = true;
         const { data } = await axios.get(`${API_BASE_URL}/api/payments`, {
           params: {
             deliveryTypeId,
@@ -227,7 +234,7 @@ export default {
       } catch (error) {
         console.error('Ошибка при загрузке методов оплаты:', error);
       } finally {
-        this.loading = false;
+        this.loadingPaymentOptions = false;
       }
     },
     async submitOrder() {
@@ -235,12 +242,19 @@ export default {
         this.sending = true;
         this.formError = {};
         this.formErrorMessage = '';
-        await axios.post(`${API_BASE_URL}/api/orders`, this.formData, {
-          params: {
-            userAccessKey: this.$store.state.userAccessKey,
-          },
-        });
+        const { data } = await axios.post(
+          `${API_BASE_URL}/api/orders`,
+          this.formData,
+          {
+            params: {
+              userAccessKey: this.$store.state.userAccessKey,
+            },
+            // eslint-disable-next-line comma-dangle
+          }
+        );
         this.$store.commit('resetCart');
+        this.$store.commit('updateOrderInfo', data);
+        this.$router.push({ name: 'orderInfo', params: { id: data.id } });
       } catch (error) {
         console.error('Ошибка при оформлении заказа:', error);
         this.formError = error.response.data.error.request || {};
