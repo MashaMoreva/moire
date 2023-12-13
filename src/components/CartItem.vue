@@ -59,6 +59,7 @@
       class="product__del button-del"
       type="button"
       aria-label="Удалить товар из корзины"
+      @click.prevent="deleteProductFromCart"
     >
       <svg width="20" height="20" fill="currentColor">
         <use xlink:href="#icon-close"></use>
@@ -90,6 +91,11 @@ export default {
       if (this.quantity > 1) {
         this.quantity -= 1;
       }
+    },
+    deleteProductFromCart() {
+      this.$store.dispatch('deleteProductFromCart', {
+        basketItemId: this.product.id,
+      });
     },
   },
 };
