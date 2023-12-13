@@ -1321,3 +1321,7 @@ a {
   font-size: 30px;
 }
 /*# sourceMappingURL=style.min.css.map */
+
+.error-message {
+  color: #e02d71;
+}
