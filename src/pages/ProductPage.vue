@@ -147,9 +147,21 @@
               </fieldset>
             </div>
 
-            <button class="item__button button button--primery" type="submit">
-              В корзину
+            <button
+              class="item__button button button--primery"
+              type="submit"
+              :disabled="addingToCart"
+            >
+              {{ addingToCart ? 'Добавление в корзину...' : 'В корзину' }}
             </button>
+
+            <p v-if="isAddedToCart" class="success-message">
+              {{ cartMessage }}
+            </p>
+
+            <p v-if="addToCartError" class="error-message">
+              {{ addToCartError }}
+            </p>
           </form>
         </div>
       </div>
@@ -206,6 +218,10 @@ export default {
       product: null,
       loading: false,
       error: null,
+      addingToCart: false,
+      isAddedToCart: false,
+      cartMessage: '',
+      addToCartError: '',
 
       quantity: 1,
       activeTab: 'info',
@@ -252,13 +268,29 @@ export default {
       }
     },
     addToCart() {
+      this.addingToCart = true;
+      this.isAddedToCart = false;
+      this.addToCartError = '';
+      this.cartMessage = '';
+
       const data = {
         productId: this.$route.params.id,
         colorId: this.currentColor.color.id,
         sizeId: this.selectedSizeId,
         quantity: this.quantity,
       };
-      this.addProductToCart(data);
+      this.addProductToCart(data)
+        .then((result) => {
+          if (result.success) {
+            this.isAddedToCart = true;
+            this.cartMessage = result.message;
+          } else {
+            this.addToCartError = result.message;
+          }
+        })
+        .finally(() => {
+          this.addingToCart = false;
+        });
     },
   },
   computed: {
